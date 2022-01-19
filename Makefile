@@ -6,7 +6,7 @@
 #    By: lcavallu <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/10 12:06:52 by lcavallu          #+#    #+#              #
-#    Updated: 2022/01/13 14:11:59 by lcavallu         ###   ########.fr        #
+#    Updated: 2022/01/19 20:52:47 by lcavallu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,10 @@ OBJ_PATH    = obj
 
 SOURCES =   mutex.c \
 			philo.c \
-			philo_libft.c 
+			philo_libft.c \
+            check.c \
+            thread.c \
+            moove.c
 
 SRC = $(addprefix $(SRC_PATH)/,$(SOURCES))
 

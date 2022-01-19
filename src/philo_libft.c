@@ -29,10 +29,17 @@ int	ft_atoi(const char *str)
 	return (var * m);
 }
 
-int	ft_isnumeric(int c)
+int	ft_isnumeric(char *str)
 {
-	if (c >= 48 && c <= 57)
-		return (1);
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] >= 48 && str[i] <= 57)
+	    	return (1);
+        i++;
+    }
 	return (0);
 }
 

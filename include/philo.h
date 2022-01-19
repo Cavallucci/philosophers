@@ -11,17 +11,25 @@
 
 # define ERROR 1
 # define SUCCESS 0
+# define YES 0
+# define NO 1
 
 typedef struct          s_data
 {
     int             test;
     int			    nb_philo;
+    int             eat;
+    int             sleep;
+    int             think;
+    int             die;
+    int             max_eat;
+    int             philo_died;
     pthread_mutex_t *forks;
-    pthread_mutex_t eat;
-    pthread_mutex_t sleep;
-    pthread_mutex_t think;
-    pthread_mutex_t die;
-    t_philo          *philo;
+    pthread_mutex_t mutex_die;
+    pthread_mutex_t mutex_print;
+    pthread_mutex_t mutex_max_eat;
+    struct timeval  time_start;
+    struct s_philo  *philo;
 }                       t_data;
 
 typedef	struct			s_philo
@@ -31,20 +39,35 @@ typedef	struct			s_philo
     int             left_fork;
     int             meal_eaten;
 	pthread_t	    thread;
-//    t_var           *var;
+    t_data           *data;
 }						t_philo;
 
 /*--------------philo.c--------------*/
-void    init_data(t_data *d, char **argv);
+long    get_time(void);
+void    *routine(void *data);
 int		main(int argc, char **argv);
 
 /*--------------check.c--------*/
 int     check_arg(int argc, char **argv);
+int     init_data(t_data *d, char **argv);
+int     init_philo(t_data *d);
+int     init_mutex(t_data *d);
 
 /*--------------philo_libft.c--------*/
 int		ft_atoi(const char *str);
-int     ft_isnumeric(int c);
+int     ft_isnumeric(char *str);
 void    ft_bzero(void *s, size_t n);
 void    *ft_calloc(size_t count, size_t size);
+
+/*--------------thread.c--------*/
+int     create_thread(t_philo *philo, t_data *d);
+int     philo_dead(t_data *d, int *dead);
+
+/*--------------moove.c--------*/
+void    take_fork(t_data *d, t_philo *philo);
+void    is_eating(t_data *d, t_philo *philo);
+void    put_down_forks(t_data *d, t_philo *philo);
+void    is_sleeping(t_data *d, t_philo *philo);
+void    is_thinking(t_philo *philo);
 
 #endif
