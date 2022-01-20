@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   thread.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
+/*   Updated: 2022/01/20 20:38:56 by lcavallu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int    create_thread(t_philo *philo, t_data *d)
@@ -14,12 +26,28 @@ int    create_thread(t_philo *philo, t_data *d)
     return (SUCCESS);
 }
 
-int philo_dead(t_data *d, int *dead)
+int philo_dead(t_data *d, _Bool *dead)
 {
-    pthread_mutex_lock(&d->mutex_die);
-    *dead = d->philo_died;
-    pthread_mutex_unlock(&d->mutex_die);
+    if (pthread_mutex_lock(&d->mutex_die) != 0)
+        return (ERROR);
+    *(dead) = d->philo_died;
+    if (pthread_mutex_unlock(&d->mutex_die) != 0)
+        return (ERROR);
     if (*dead == YES)
         return (YES);
     return (NO);
+}
+
+int join_thread(t_philo *philo, t_data *d)
+{
+    int i;
+
+    i = 0;
+    while (i < d->nb_philo)
+    {
+        if (pthread_join(philo[i].thread, NULL) != 0)
+            return (ERROR);
+        i++;
+    }
+    return (SUCCESS);
 }

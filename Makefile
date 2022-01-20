@@ -6,7 +6,7 @@
 #    By: lcavallu <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/10 12:06:52 by lcavallu          #+#    #+#              #
-#    Updated: 2022/01/19 20:52:47 by lcavallu         ###   ########.fr        #
+#    Updated: 2022/01/20 16:35:33 by lcavallu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME    = philo
 
 CC      = gcc
 
-FLAGS   = -Wall -Wextra -Werror -pthread #-fsanitize=address
+FLAGS   = -Wall -Wextra -Werror -pthread -g #-fsanitize=address
 
 INCLUDE = include
 
@@ -22,8 +22,7 @@ SRC_PATH    = src
 
 OBJ_PATH    = obj
 
-SOURCES =   mutex.c \
-			philo.c \
+SOURCES =	philo.c \
 			philo_libft.c \
             check.c \
             thread.c \

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
+/*   Updated: 2022/01/20 17:53:35 by lcavallu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int check_arg(int argc, char **argv)
@@ -7,7 +19,7 @@ int check_arg(int argc, char **argv)
     i = 1;
     if ((argc != 5 && argc != 6) || ft_atoi(argv[1]) == 0)
     {
-        printf("error argument\n");
+        printf("error nb argument\n");
         return (ERROR);
     }
     while (argv[i])
@@ -60,6 +72,7 @@ int init_philo(t_data *d)
         philo[i].right_fork = i;
         philo[i].left_fork = (i + 1) % d->nb_philo;
         philo[i].meal_eaten = 0;
+        philo[i].data = d;
         i++;
     }
     d->philo = philo;

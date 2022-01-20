@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
+/*   Updated: 2022/01/20 20:29:03 by lcavallu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 long    get_time(void)
@@ -13,10 +25,12 @@ long    get_time(void)
 void*	routine(void* philosopher)
 {
     t_philo *philo;
-    int     dead;
+    _Bool     dead;
 
     philo = philosopher;
     dead = NO;
+    if (philo->id % 2 != 0)
+        usleep(10);
     while (dead == NO && philo->data->nb_philo > 1 && philo->meal_eaten < philo->data->max_eat)
     {
         if (philo_dead(philo->data, &dead) == YES)
@@ -30,6 +44,7 @@ void*	routine(void* philosopher)
             is_thinking(philo);
         if (philo_dead(philo->data, &dead) == YES)
             break;
+        break;
     }
     return (philo);
 }
@@ -37,10 +52,14 @@ void*	routine(void* philosopher)
 int	main (int argc, char **argv)
 {
     t_data	d[1];
-
-    if (check_arg(argc, argv) == ERROR || init_data(d, argv) == ERROR || init_mutex(d) == ERROR || gettimeofday(&d->time_start, NULL) == -1)
+//modifier atoi avec le int max
+    if (check_arg(argc, argv) == ERROR || init_data(d, argv) == ERROR || init_mutex(d) == ERROR)
+        return (ERROR);
+    if (gettimeofday(&d->time_start, NULL) == -1)
         return (ERROR);
     if (create_thread(d->philo, d) == ERROR)
         return (ERROR);
-    
+   //check death
+    if (join_thread(d->philo, d) == ERROR)
+       return (ERROR);
 }

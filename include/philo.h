@@ -61,12 +61,13 @@ void    *ft_calloc(size_t count, size_t size);
 
 /*--------------thread.c--------*/
 int     create_thread(t_philo *philo, t_data *d);
-int     philo_dead(t_data *d, int *dead);
+int     philo_dead(t_data *d, _Bool *dead);
+int     join_thread(t_philo *philo, t_data *d);
 
 /*--------------moove.c--------*/
-void    take_fork(t_data *d, t_philo *philo);
+int    take_fork(t_data *d, t_philo *philo);
 void    is_eating(t_data *d, t_philo *philo);
-void    put_down_forks(t_data *d, t_philo *philo);
+int    put_down_forks(t_data *d, t_philo *philo);
 void    is_sleeping(t_data *d, t_philo *philo);
 void    is_thinking(t_philo *philo);
 
