@@ -6,16 +6,16 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/20 20:29:03 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/21 15:26:19 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long    get_time(void)
+unsigned long    get_time(void)
 {
     struct timeval  time;
-    long            timestamp;
+    unsigned long            timestamp;
 
     gettimeofday(&time, NULL);
     timestamp = time.tv_sec * 1000 + time.tv_usec / 1000;
@@ -26,12 +26,16 @@ void*	routine(void* philosopher)
 {
     t_philo *philo;
     _Bool     dead;
+    _Bool     is_max_present;
 
     philo = philosopher;
     dead = NO;
     if (philo->id % 2 != 0)
-        usleep(10);
-    while (dead == NO && philo->data->nb_philo > 1 && philo->meal_eaten < philo->data->max_eat)
+        usleep(1000);
+    is_max_present = YES;
+    if (philo->data->max_eat == -1)
+        is_max_present = NO;
+    while (dead == NO && philo->data->nb_philo > 1 && ((is_max_present == YES && philo->meal_eaten < philo->data->max_eat) || is_max_present == NO))
     {
         if (philo_dead(philo->data, &dead) == YES)
             break;
@@ -54,8 +58,6 @@ int	main (int argc, char **argv)
     t_data	d[1];
 //modifier atoi avec le int max
     if (check_arg(argc, argv) == ERROR || init_data(d, argv) == ERROR || init_mutex(d) == ERROR)
-        return (ERROR);
-    if (gettimeofday(&d->time_start, NULL) == -1)
         return (ERROR);
     if (create_thread(d->philo, d) == ERROR)
         return (ERROR);

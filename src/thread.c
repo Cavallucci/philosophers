@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/20 20:38:56 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/21 15:26:31 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ int    create_thread(t_philo *philo, t_data *d)
     int i;
 
     i = 0;
+
     while (i < d->nb_philo)
     {
+        usleep(1000);
         if (pthread_create(&(philo[i]).thread, NULL, &routine, &philo[i]) != 0)
             return (ERROR);
         i++;

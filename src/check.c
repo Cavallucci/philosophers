@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/20 17:53:35 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/21 14:08:32 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int init_data(t_data *d, char **argv)
     d->sleep = ft_atoi(argv[4]);
     d->think = 0;
     d->die = ft_atoi(argv[2]);
-    d->max_eat = 0;
+    d->max_eat = -1;
     d->philo_died = NO;
     if (argv[5])
         d->max_eat = ft_atoi(argv[2]);
@@ -54,6 +54,7 @@ int init_data(t_data *d, char **argv)
         printf("error init philo\n");
         return (ERROR);
     }
+    d->time_start = get_time();
     return (SUCCESS);
 }
 

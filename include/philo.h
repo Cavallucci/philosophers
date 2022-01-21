@@ -28,7 +28,7 @@ typedef struct          s_data
     pthread_mutex_t mutex_die;
     pthread_mutex_t mutex_print;
     pthread_mutex_t mutex_max_eat;
-    struct timeval  time_start;
+    unsigned long   time_start;
     struct s_philo  *philo;
 }                       t_data;
 
@@ -43,7 +43,7 @@ typedef	struct			s_philo
 }						t_philo;
 
 /*--------------philo.c--------------*/
-long    get_time(void);
+unsigned long    get_time(void);
 void    *routine(void *data);
 int		main(int argc, char **argv);
 
@@ -66,7 +66,7 @@ int     join_thread(t_philo *philo, t_data *d);
 
 /*--------------moove.c--------*/
 int    take_fork(t_data *d, t_philo *philo);
-void    is_eating(t_data *d, t_philo *philo);
+int    is_eating(t_data *d, t_philo *philo);
 int    put_down_forks(t_data *d, t_philo *philo);
 void    is_sleeping(t_data *d, t_philo *philo);
 void    is_thinking(t_philo *philo);
