@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/21 15:26:19 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/22 18:40:33 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,15 @@ void*	routine(void* philosopher)
 
     philo = philosopher;
     dead = NO;
-    if (philo->id % 2 != 0)
-        usleep(1000);
+printf("philo[i] = %i\n", philo->id);
+//    if (philo->id % 2 != 0)
+//        usleep(100);
     is_max_present = YES;
     if (philo->data->max_eat == -1)
         is_max_present = NO;
     while (dead == NO && philo->data->nb_philo > 1 && ((is_max_present == YES && philo->meal_eaten < philo->data->max_eat) || is_max_present == NO))
     {
+printf("in while philo[i] = %i\n", philo->id);
         if (philo_dead(philo->data, &dead) == YES)
             break;
         take_fork(philo->data, philo);
@@ -45,10 +47,9 @@ void*	routine(void* philosopher)
         if (philo_dead(philo->data, &dead) == NO)
            is_sleeping(philo->data, philo);
         if (philo_dead(philo->data, &dead) == NO)
-            is_thinking(philo);
+            is_thinking(philo->data, philo);
         if (philo_dead(philo->data, &dead) == YES)
             break;
-        break;
     }
     return (philo);
 }

@@ -68,7 +68,7 @@ int     join_thread(t_philo *philo, t_data *d);
 int    take_fork(t_data *d, t_philo *philo);
 int    is_eating(t_data *d, t_philo *philo);
 int    put_down_forks(t_data *d, t_philo *philo);
-void    is_sleeping(t_data *d, t_philo *philo);
-void    is_thinking(t_philo *philo);
+int    is_sleeping(t_data *d, t_philo *philo);
+int    is_thinking(t_data *d, t_philo *philo);
 
 #endif

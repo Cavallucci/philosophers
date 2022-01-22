@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/21 17:42:36 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/22 18:21:26 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int    take_fork(t_data *d, t_philo *philo)
 int ft_sleep(int time_eat, t_data *d)
 {
     int i;
-    _Bool philo_dead;
+    _Bool philo_died;
 
     i = 100;
     pthread_mutex_lock(&d->mutex_die);
@@ -47,6 +47,7 @@ int ft_sleep(int time_eat, t_data *d)
     }
     if (philo_died == NO)
         usleep(100);
+    return (SUCCESS);
 }
 
 int    is_eating(t_data *d, t_philo *philo)
@@ -85,6 +86,8 @@ int    put_down_forks(t_data *d, t_philo *philo)
 
 int    is_sleeping(t_data *d, t_philo *philo)
 {
+    long int    time;
+
     pthread_mutex_lock(&d->mutex_print);
     if (d->philo_died == NO)
     {
@@ -96,8 +99,16 @@ int    is_sleeping(t_data *d, t_philo *philo)
     return (SUCCESS);
 }
 
-void    is_thinking(t_philo *philo)
+int    is_thinking(t_data *d, t_philo *philo)
 {
-    (void)philo;
-    printf("im thinking\n");
+    long int    time;
+
+    pthread_mutex_lock(&d->mutex_print);
+    if (d->philo_died == NO)
+    {
+      time = get_time() - d->time_start;
+      printf("%ldms     |%d is thinking\n", time, philo->id + 1);
+    }
+    pthread_mutex_unlock(&d->mutex_print);
+    return (SUCCESS); 
 }
