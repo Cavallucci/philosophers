@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/21 14:08:32 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/24 18:27:06 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ int check_arg(int argc, char **argv)
     i = 1;
     if ((argc != 5 && argc != 6) || ft_atoi(argv[1]) == 0)
     {
-        printf("error nb argument\n");
+        printf("error argument\n");
         return (ERROR);
     }
     while (argv[i])
     {
-        if (!ft_isnumeric(argv[i]) || ft_atoi(argv[i]) == -1)
+        if (ft_isnumeric(argv[i]) == ERROR || ft_atoi(argv[i]) == -1)
         {
-            printf("error argument\n");
+            printf("error argument not valid\n");
             return (ERROR);
         }
         i++;

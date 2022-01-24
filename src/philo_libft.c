@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/20 12:52:33 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/24 15:57:12 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ int	ft_isnumeric(char *str)
     while (str[i])
     {
         if (str[i] >= 48 && str[i] <= 57)
-	    	return (1);
-        i++;
+            i++;
+        else 
+            return (1);
     }
 	return (0);
 }

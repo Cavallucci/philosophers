@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/22 18:21:26 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/24 18:28:59 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int    take_fork(t_data *d, t_philo *philo)
     if (d->philo_died == NO)
     {
       time = get_time() - d->time_start;
-      printf("%ldms     |%d is taking a fork\n", time, philo->id + 1);
+      printf("%ldms     |%d is taking forks\n", time, philo->id + 1);
     }
     pthread_mutex_unlock(&d->mutex_print);
     return (SUCCESS);
@@ -55,6 +55,7 @@ int    is_eating(t_data *d, t_philo *philo)
     long int    time;
 
     pthread_mutex_lock(&d->mutex_die);
+    philo->last_meal = get_time();
     philo->meal_eaten++;
     pthread_mutex_unlock(&d->mutex_die);
     pthread_mutex_lock(&d->mutex_print);
@@ -73,12 +74,12 @@ int    put_down_forks(t_data *d, t_philo *philo)
     long int    time;
 
     pthread_mutex_unlock(&d->forks[philo->right_fork]);
-    pthread_mutex_unlock(&d->forks[philo->right_fork]);
+    pthread_mutex_unlock(&d->forks[philo->left_fork]);
     pthread_mutex_lock(&d->mutex_print);
     if (d->philo_died == NO)
     {
       time = get_time() - d->time_start;
-      printf("%ldms     |%d is puting back fork\n", time, philo->id + 1);
+      printf("%ldms     |%d is puting back forks\n", time, philo->id + 1);
     }
     pthread_mutex_unlock(&d->mutex_print);
     return (SUCCESS);

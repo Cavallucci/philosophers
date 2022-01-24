@@ -18,7 +18,7 @@ typedef struct          s_data
 {
     int             test;
     int			    nb_philo;
-    int             eat;
+    unsigned long   eat;
     int             sleep;
     int             think;
     int             die;
@@ -38,7 +38,8 @@ typedef	struct			s_philo
     int             right_fork;
     int             left_fork;
     int             meal_eaten;
-	pthread_t	    thread;
+	unsigned long   last_meal;
+    pthread_t	    thread;
     t_data           *data;
 }						t_philo;
 
@@ -61,8 +62,9 @@ void    *ft_calloc(size_t count, size_t size);
 
 /*--------------thread.c--------*/
 int     create_thread(t_philo *philo, t_data *d);
-int     philo_dead(t_data *d, _Bool *dead);
+int     philo_dead(t_data *d);
 int     join_thread(t_philo *philo, t_data *d);
+int     check_death(t_data *d, t_philo *philo);
 
 /*--------------moove.c--------*/
 int    take_fork(t_data *d, t_philo *philo);
