@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/24 19:12:27 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/25 20:57:07 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,16 @@ unsigned long    get_time(void)
 void*	routine(void* philosopher)
 {
     t_philo *philo;
-    _Bool     is_max_present;
 
     philo = philosopher;
     if (philo->id % 2 != 0)
         usleep(1000);
-    is_max_present = YES;
-    if (philo->data->max_eat == -1)
-        is_max_present = NO;
-    while ((is_max_present == YES && philo->meal_eaten < philo->data->max_eat) || is_max_present == NO)
+    while ((philo->data->max_eat != -1 && philo->meal_eaten < philo->data->max_eat) || philo->data->max_eat == -1)
     {
         if (philo_dead(philo->data) == YES)
             break;
-        take_fork(philo->data, philo);
+        if (take_fork(philo->data, philo) == ERROR)
+            break;
         is_eating(philo->data, philo);
         put_down_forks(philo->data, philo);
         if (philo_dead(philo->data) == NO)
@@ -52,11 +49,15 @@ int	main (int argc, char **argv)
 {
     t_data	d[1];
 //modifier atoi avec le int max
-    if (check_arg(argc, argv) == ERROR || init_data(d, argv) == ERROR || init_mutex(d) == ERROR)
+    if (check_arg(argc, argv) == ERROR || init_data(d, argv) == ERROR
+        || init_mutex(d) == ERROR)
         return (ERROR);
     if (create_thread(d->philo, d) == ERROR)
         return (ERROR);
     check_death(d, d->philo);
+    printf("coucou\n");
     if (join_thread(d->philo, d) == ERROR)
        return (ERROR);
+//  ft_free(d, d->philo);
+    return (SUCCESS);
 }

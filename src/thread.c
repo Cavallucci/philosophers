@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/24 20:28:22 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/25 21:01:11 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int    create_thread(t_philo *philo, t_data *d)
 
     while (i < d->nb_philo)
     {
+        usleep(100);
         if (pthread_create(&(philo[i]).thread, NULL, &routine, &philo[i]) != 0)
             return (ERROR);
         i++;
@@ -51,33 +52,42 @@ int join_thread(t_philo *philo, t_data *d)
     i = 0;
     while (i < d->nb_philo)
     {
+    printf("im here\n");
         if (pthread_join(philo[i].thread, NULL) != 0)
             return (ERROR);
         i++;
     }
+    printf("here\n");
     return (SUCCESS);
 }
 
 int check_death(t_data *d, t_philo *philo)
 {
-    unsigned long   time_now;
-    int             i;
+    int time_now;
+    int i;
 
-    i= 0;
-    while (d->philo_died == NO)
+    i = 0;
+    while ((d->philo_died == NO && ((d->max_eat != -1 && philo[i].meal_eaten < d->max_eat) || d->max_eat == -1)) || d->nb_philo == 1)
     {
-        time_now = philo[i].last_meal - get_time();
-        if (time_now > d->eat)
+        if ((d->nb_philo != 1 && philo[i].meal_eaten > 1) || d->nb_philo == 1)
         {
-            d->philo_died = YES;
-            printf("philo %i died at %ld\n", i + 1, time_now);
-            return (YES);
+            usleep(100);
+            pthread_mutex_lock(&d->mutex_die);
+            time_now = (get_time() - d->time_start) - philo[i].last_meal;
+            pthread_mutex_unlock(&d->mutex_die);
+            pthread_mutex_lock(&d->mutex_print);
+            if (time_now > d->die)
+            {
+                d->philo_died = YES;
+                printf("philo %i died at %i\n", i + 1, time_now);
+                return (YES);
+            }
+            pthread_mutex_unlock(&d->mutex_print);
         }
         if (i == d->nb_philo)
             i = 0;
         else
             i++;
-        usleep(100);
     }
     return (NO);
 }

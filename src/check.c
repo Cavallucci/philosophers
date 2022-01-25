@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/24 18:27:06 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/25 16:09:08 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int init_data(t_data *d, char **argv)
     d->max_eat = -1;
     d->philo_died = NO;
     if (argv[5])
-        d->max_eat = ft_atoi(argv[2]);
+        d->max_eat = ft_atoi(argv[5]);
     if (init_philo(d) == ERROR)
     {
         printf("error init philo\n");
@@ -74,6 +74,7 @@ int init_philo(t_data *d)
         philo[i].left_fork = (i + 1) % d->nb_philo;
         philo[i].meal_eaten = 0;
         philo[i].data = d;
+        philo[i].last_meal = -1;
         i++;
     }
     d->philo = philo;

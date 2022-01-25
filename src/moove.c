@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/24 18:28:59 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/25 18:37:20 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,21 @@ int    take_fork(t_data *d, t_philo *philo)
     long int    time;
 
     pthread_mutex_lock(&d->forks[philo->left_fork]);
+    pthread_mutex_lock(&d->mutex_print);
+    if (d->philo_died == NO)
+    {
+      time = get_time() - d->time_start;
+      printf("%ldms     |%d has taken a fork\n", time, philo->id + 1);
+    }
+    pthread_mutex_unlock(&d->mutex_print);
+    if (philo->left_fork == philo->right_fork)
+        return (ERROR);
     pthread_mutex_lock(&d->forks[philo->right_fork]);
     pthread_mutex_lock(&d->mutex_print);
     if (d->philo_died == NO)
     {
       time = get_time() - d->time_start;
-      printf("%ldms     |%d is taking forks\n", time, philo->id + 1);
+      printf("%ldms     |%d has taken a fork\n", time, philo->id + 1);
     }
     pthread_mutex_unlock(&d->mutex_print);
     return (SUCCESS);
@@ -46,7 +55,7 @@ int ft_sleep(int time_eat, t_data *d)
         i += 100;
     }
     if (philo_died == NO)
-        usleep(100);
+        usleep((time_eat - (i - 100)) * 1000);
     return (SUCCESS);
 }
 
@@ -55,11 +64,11 @@ int    is_eating(t_data *d, t_philo *philo)
     long int    time;
 
     pthread_mutex_lock(&d->mutex_die);
-    philo->last_meal = get_time();
+    philo->last_meal = get_time() - d->time_start;
     philo->meal_eaten++;
     pthread_mutex_unlock(&d->mutex_die);
     pthread_mutex_lock(&d->mutex_print);
-    if (d->philo_died == NO)
+    if (d->philo_died == NO && d->nb_philo != 1)
     {
        time = get_time() - d->time_start;
       printf("%ldms     |%d is eating\n", time, philo->id + 1);
@@ -96,7 +105,7 @@ int    is_sleeping(t_data *d, t_philo *philo)
       printf("%ldms     |%d is sleeping\n", time, philo->id + 1);
     }
     pthread_mutex_unlock(&d->mutex_print);
-    ft_sleep(d->eat, d);
+    ft_sleep(d->sleep, d);
     return (SUCCESS);
 }
 
