@@ -6,53 +6,44 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/24 15:57:12 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/26 18:14:37 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_atoi(const char *str)
+int	ft_atoi(const char *nptr)
 {
-	size_t				i;
-	int					m;
-	unsigned long long	var;
+	int			sign;
+	long long	nb;
 
-	m = 1;
-	i = 0;
-	var = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == 45 || str[i] == 43)
+	nb = 0;
+	sign = 1;
+	while (*nptr == '\f' || *nptr == '\t' || *nptr == '\n' || *nptr == '\r'
+		|| *nptr == '\v' || *nptr == ' ')
+		nptr++;
+	while (*nptr >= '0' && *nptr <= '9')
 	{
-		if (str[i] == 45)
-			m = -1;
-		i++;
+		nb = nb * 10 + *nptr - 48;
+		nptr++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		var = var * 10 + (str[i] - 48);
-		i++;
-	}
-	if (var > 9223372036854775807 && m == 1)
+	if (nb * sign > 2147483647)
 		return (-1);
-	else if (var > 9223372036854775807 && m == -1)
-		return (0);
-	return (var * m);
+	return ((int)nb * sign);
 }
 
 int	ft_isnumeric(char *str)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (str[i])
-    {
-        if (str[i] >= 48 && str[i] <= 57)
-            i++;
-        else 
-            return (1);
-    }
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] >= 48 && str[i] <= 57)
+			i++;
+		else
+			return (1);
+	}
 	return (0);
 }
 
