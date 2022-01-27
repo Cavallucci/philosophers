@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/27 14:40:52 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/27 17:39:56 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,6 @@ int	create_thread(t_philo *philo, t_data *d)
 	return (SUCCESS);
 }
 
-int	philo_dead(t_data *d)
-{
-	pthread_mutex_lock(&d->mutex_die);
-	if (d->philo_died == YES)
-	{
-		pthread_mutex_unlock(&d->mutex_die);
-		return (YES);
-	}
-	else
-	{
-		pthread_mutex_unlock(&d->mutex_die);
-		return (NO);
-	}
-}
-
 int	join_thread(t_philo *philo, t_data *d)
 {
 	int	i;
@@ -78,35 +63,37 @@ int	join_thread(t_philo *philo, t_data *d)
 	return (SUCCESS);
 }
 
-int	check_death(t_data *d, t_philo *philo)
+void	check_death_inside(int i, t_data *d, t_philo *philo)
 {
 	int	time_now;
+
+	pthread_mutex_unlock(&d->mutex_die);
+	usleep(100);
+	pthread_mutex_lock(&d->mutex_die);
+	time_now = (get_time() - d->time_start) - philo[i].last_meal;
+	pthread_mutex_unlock(&d->mutex_die);
+	if (time_now > d->die)
+	{
+		pthread_mutex_lock(&d->mutex_die);
+		d->philo_died = YES;
+		pthread_mutex_unlock(&d->mutex_die);
+		pthread_mutex_lock(&d->mutex_print);
+		printf("%ldms     |%i died\n", get_time() - d->time_start, i + 1);
+		pthread_mutex_unlock(&d->mutex_print);
+	}
+}
+
+int	check_death(t_data *d, t_philo *philo)
+{
 	int	i;
 
 	i = 0;
-	while (d->philo_died == NO && (((d->max_eat != -1
-					&& philo[i].meal_eaten < d->max_eat) || d->max_eat == -1)
-			|| d->nb_philo == 1))
+	while (d->philo_died == NO && ((check_meals(d, philo, i)
+				|| d->max_eat == -1) || d->nb_philo == 1))
 	{
 		pthread_mutex_lock(&d->mutex_die);
 		if ((d->nb_philo != 1 && philo[i].meal_eaten > 0) || d->nb_philo == 1)
-		{
-			pthread_mutex_unlock(&d->mutex_die);
-			usleep(100);
-			pthread_mutex_lock(&d->mutex_die);
-			time_now = (get_time() - d->time_start) - philo[i].last_meal;
-			pthread_mutex_unlock(&d->mutex_die);
-			if (time_now > d->die)
-			{
-				pthread_mutex_lock(&d->mutex_die);
-				d->philo_died = YES;
-				pthread_mutex_unlock(&d->mutex_die);
-				pthread_mutex_lock(&d->mutex_print);
-				printf("%ldms     |%i died at %ims between meals\n", get_time()
-					- d->time_start, i + 1, time_now);
-				pthread_mutex_unlock(&d->mutex_print);
-			}
-		}
+			check_death_inside(i, d, philo);
 		else
 			pthread_mutex_unlock(&d->mutex_die);
 		if (i == (d->nb_philo - 1))

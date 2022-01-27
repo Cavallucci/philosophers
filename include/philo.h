@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/26 19:46:59 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/27 17:23:38 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int				ft_atoi(const char *str);
 int				ft_isnumeric(char *str);
 void			ft_bzero(void *s, size_t n);
 void			*ft_calloc(size_t count, size_t size);
+int				check_meals(t_data *d, t_philo *philo, int i);
 
 /*--------------thread.c--------*/
 int				create_thread(t_philo *philo, t_data *d);

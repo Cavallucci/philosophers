@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/26 18:14:37 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/27 17:39:24 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,20 @@ void	*ft_calloc(size_t count, size_t size)
 		return (NULL);
 	ft_bzero(array, size * count);
 	return (array);
+}
+
+int	check_meals(t_data *d, t_philo *philo, int i)
+{
+	pthread_mutex_lock(&d->mutex_die);
+	if ((d->max_eat != 1 && philo[i].meal_eaten < d->max_eat)
+		|| d->max_eat == 1)
+	{
+		pthread_mutex_unlock(&d->mutex_die);
+		return (SUCCESS);
+	}
+	else
+	{
+		pthread_mutex_unlock(&d->mutex_die);
+		return (ERROR);
+	}
 }

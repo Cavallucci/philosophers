@@ -6,11 +6,26 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/26 18:13:15 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/27 15:29:07 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	philo_dead(t_data *d)
+{
+	pthread_mutex_lock(&d->mutex_die);
+	if (d->philo_died == YES)
+	{
+		pthread_mutex_unlock(&d->mutex_die);
+		return (YES);
+	}
+	else
+	{
+		pthread_mutex_unlock(&d->mutex_die);
+		return (NO);
+	}
+}
 
 unsigned long	get_time(void)
 {
