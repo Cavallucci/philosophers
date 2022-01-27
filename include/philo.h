@@ -6,7 +6,7 @@
 /*   By: lcavallu <marvin@42.fr>                     +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 18:41:15 by lcavallu          #+#    #+#             */
-/*   Updated: 2022/01/26 18:24:18 by lcavallu         ###   ########.fr       */
+/*   Updated: 2022/01/26 19:46:59 by lcavallu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int				create_thread(t_philo *philo, t_data *d);
 int				philo_dead(t_data *d);
 int				join_thread(t_philo *philo, t_data *d);
 int				check_death(t_data *d, t_philo *philo);
+int				ft_sleep(int time_eat, t_data *d);
 
 /*--------------moove.c--------*/
 int				take_fork(t_data *d, t_philo *philo);
